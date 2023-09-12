@@ -1,0 +1,30 @@
+<h1>Profile page</h1>
+<form method="post" action="/profileUpdate">
+    <input type="hidden" name="profileid" value="<%= locals.users.id %>">
+    <table border="1">
+        <tr>
+            <td>Name :- </td>
+            <td>
+                <input type="text" name="name" value="<%= locals.users.name %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Email :- </td>
+            <td>
+                <input type="text" name="email" value="<%= locals.users.email %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Password :- </td>
+            <td>
+                <input type="text" name="password" value="<%= locals.users.password %>">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit">
+            </td>
+        </tr>
+    </table>
+</form>
