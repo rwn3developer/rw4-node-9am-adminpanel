@@ -232,4 +232,13 @@ routes.post('/newpasswordPost',async(req,res)=>{
         return false;
     }
 })
+
+routes.get('/category',passport.checkAuthentication,(req,res)=>{
+    return res.render('category/category');
+})
+routes.get('/addcategory',passport.checkAuthentication,(req,res)=>{
+    return res.render('category/add_category');
+})
+
+
 module.exports = routes; 
