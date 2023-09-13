@@ -6,9 +6,18 @@ const routes = express.Router();
 
 const registerTbl = require('../models/registerTbl');
 
+const flash = require('connect-flash');
+
 const cookieParser = require('cookie-parser');
 
 routes.use(cookieParser());
+
+routes.use(flash());
+
+routes.use((req,res,next)=>{
+    res.locals.message = req.flash();
+    next();
+})
 
 routes.get('/',(req,res)=>{
     if(res.locals.users){
@@ -36,6 +45,7 @@ routes.post('/registerData',async(req,res)=>{
             })
             if(user){
                 console.log("Record successfully insert");
+                req.flash('success', 'Record successfully insert');
                 return res.redirect('back');
             }else{
                 console.log("Record not successfully insert");
@@ -43,6 +53,7 @@ routes.post('/registerData',async(req,res)=>{
             }
         }else{
             console.log("Confirm password and password not match");
+            req.flash('error',"Confirm password and password not match");
             return res.redirect('back');
         }
     }catch(err){
@@ -221,4 +232,4 @@ routes.post('/newpasswordPost',async(req,res)=>{
         return false;
     }
 })
-module.exports = routes;
+module.exports = routes; 

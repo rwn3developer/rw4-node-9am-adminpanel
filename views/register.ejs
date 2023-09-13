@@ -44,7 +44,20 @@
                     <div class="text-center p-t-20 p-b-20">
                         <span class="db"><img src="assets/images/logo.png" alt="logo" /></span>
                     </div>
+                    
                     <!-- Form -->
+                    <% if(message.success){ %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message.success %>
+                        </div>
+                    <% } %>
+
+                    <% if(message.error){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= message.error %>
+                        </div>
+                    <% } %>
+
                     <form method="post" class="form-horizontal m-t-20" action="/registerData">
                         <div class="row p-b-30">
                             <div class="col-12">
