@@ -14,6 +14,9 @@ routes.use(cookieParser());
 
 routes.use(flash());
 
+
+const categoryTbl = require('../models/categoryTbl');
+
 routes.use((req,res,next)=>{
     res.locals.message = req.flash();
     next();
@@ -233,12 +236,63 @@ routes.post('/newpasswordPost',async(req,res)=>{
     }
 })
 
-routes.get('/category',passport.checkAuthentication,(req,res)=>{
-    return res.render('category/category');
+routes.get('/category',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let viewcategory = await categoryTbl.find({});
+        if(viewcategory){
+            return res.render('category/category',{
+                viewcategory
+            });
+        }else{
+            console.log("Category not fetch");
+            return false; 
+        }
+        
+    }catch(err){
+        return false;
+    }
+    
 })
-routes.get('/addcategory',passport.checkAuthentication,(req,res)=>{
+routes.get('/addcategory',passport.checkAuthentication,async(req,res)=>{
     return res.render('category/add_category');
 })
+
+routes.post('/postCategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let category = req.body.category;
+        let categorydata = await categoryTbl.create({
+            category : category
+        })
+        if(categorydata){
+            req.flash('success',"Category successfully insert");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"Category not successfully insert");
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
+
+routes.get('/deleteCategory/:id',async(req,res)=>{
+    try{
+        let id = req.params.id;
+        let deletecategory = await categoryTbl.findByIdAndDelete(id);
+        if(deletecategory){
+            req.flash('success',"Category successfully delete");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"Category not successfully delete");
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
+
 
 
 module.exports = routes; 

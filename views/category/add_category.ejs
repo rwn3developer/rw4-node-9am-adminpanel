@@ -35,7 +35,19 @@
             <div class="col-md-6">
                
                 <div class="card">
-                    <form class="form-horizontal">
+                    <% if(message.success){ %>
+                        <div class="alert alert-success" role="alert">
+                            <%= message.success %>
+                        </div>
+                    <% } %>
+
+                    <% if(message.error){ %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= message.error %>
+                        </div>
+                    <% } %>
+                    
+                    <form  method="post" action="/postCategory" class="form-horizontal">
                        
                         <div class="card-body">
                            
@@ -43,7 +55,7 @@
                             <div class="form-group row">
                                 <label for="fname" class="col-sm-3 text-right control-label col-form-label">Category</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="fname" placeholder="Category Name Here">
+                                    <input type="text" class="form-control" name="category" placeholder="Category Name Here">
                                 </div>
                             </div>
                             <!-- <div class="form-group row">
