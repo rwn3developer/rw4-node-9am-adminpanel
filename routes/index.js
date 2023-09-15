@@ -16,6 +16,8 @@ routes.use(flash());
 
 
 const categoryTbl = require('../models/categoryTbl');
+const subcategoryTbl = require('../models/subcategoryTbl');
+
 
 routes.use((req,res,next)=>{
     res.locals.message = req.flash();
@@ -276,7 +278,7 @@ routes.post('/postCategory',passport.checkAuthentication,async(req,res)=>{
     }
 })
 
-routes.get('/deleteCategory/:id',async(req,res)=>{
+routes.get('/deleteCategory/:id',passport.checkAuthentication,async(req,res)=>{
     try{
         let id = req.params.id;
         let deletecategory = await categoryTbl.findByIdAndDelete(id);
@@ -293,6 +295,48 @@ routes.get('/deleteCategory/:id',async(req,res)=>{
     }
 })
 
+routes.get('/subcategory',passport.checkAuthentication,async(req,res)=>{
+ 
+    try{
+        const subcategory = await subcategoryTbl.find({}).populate('categoryId');
+        console.log(subcategory);
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+ 
+    return res.render('subcategory/subcategory')
+})
 
+routes.get('/add_subcategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let category = await categoryTbl.find({});
+        return res.render('subcategory/add_sub_category',{
+            category
+        });
+    }catch(err){
+        console.log(err);
+        return false;
+    } 
+})
+
+routes.post('/postSubCategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        const subcategory = await subcategoryTbl.create({
+            categoryId : req.body.category,
+            subcategory : req.body.subcategory
+        });
+        if(subcategory){
+            req.flash('success',"Subcategory successfully insert");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"Subcategory not successfully insert");
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
 
 module.exports = routes; 
