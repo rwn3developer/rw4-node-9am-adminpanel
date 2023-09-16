@@ -43,12 +43,29 @@
                             <tr>
                               <th scope="col">Id</th>
                               <th scope="col">Category</th>
+                              <th scope="col">Sub Category</th>
                               <th scope="col">Action</th>
                             </tr>
                           </thead>
+
+
                           <tbody>
 
-                          
+                            <% subcategory.map((val,i)=>{ i++ %>
+                                <tr>
+                                    <td><%= i %></td>
+                                    <td><%= val.categoryId.category %></td>
+                                    <td><%= val.subcategory %></td>
+                                    <td>
+                                        <button class="btn btn-primary">
+                                            <a href="/editsubcategory?id=<%= val.id %>" class="text-white fa fa-edit"></a>
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <a href="/deletesubcategory?id=<%= val.id %>" class="text-white fa fa-trash"></a>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
                            
                           </tbody>
                     </table>

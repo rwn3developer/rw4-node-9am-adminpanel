@@ -296,16 +296,15 @@ routes.get('/deleteCategory/:id',passport.checkAuthentication,async(req,res)=>{
 })
 
 routes.get('/subcategory',passport.checkAuthentication,async(req,res)=>{
- 
     try{
         const subcategory = await subcategoryTbl.find({}).populate('categoryId');
-        console.log(subcategory);
+        return res.render('subcategory/subcategory',{
+            subcategory
+        })
     }catch(err){
         console.log(err);
         return false;
     }
- 
-    return res.render('subcategory/subcategory')
 })
 
 routes.get('/add_subcategory',passport.checkAuthentication,async(req,res)=>{
@@ -338,5 +337,63 @@ routes.post('/postSubCategory',passport.checkAuthentication,async(req,res)=>{
         return false;
     }
 })
+
+routes.get('/editsubcategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let id = req.query.id;
+        let category = await categoryTbl.find({});
+        let editcategory = await subcategoryTbl.findById(id).populate('categoryId');
+        return res.render('subcategory/edit_sub_category',{
+            category,
+            editcategory
+        })
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
+
+routes.post('/postEditSubCategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let editid = req.body.editid;
+        const {category,subcategory} = req.body;
+        let updateSubCategory = await subcategoryTbl.findByIdAndUpdate(editid,{
+            categoryId : category,
+            subcategory : subcategory
+        });
+        if(updateSubCategory){
+           req.flash('success',"Record successfully Update");
+            return res.redirect('back');
+        }
+        else{
+            console.log("Record not update");
+            return res.redirect('back');
+        }
+    }
+    catch(err){
+        console.log(err);
+        return false;
+    }
+    
+})
+
+routes.get('/deletesubcategory',async(req,res)=>{
+    try{
+        let editid = req.query.id;
+        let deletecategory = await subcategoryTbl.findByIdAndDelete(editid);
+        if(deletecategory){
+            req.flash('success',"Category successfully delete");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"Category not successfully delete");
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
+
+
 
 module.exports = routes; 
