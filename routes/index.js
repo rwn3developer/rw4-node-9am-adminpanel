@@ -17,6 +17,8 @@ routes.use(flash());
 
 const categoryTbl = require('../models/categoryTbl');
 const subcategoryTbl = require('../models/subcategoryTbl');
+const exsubcategoryTbl = require('../models/exsubcategory');
+
 
 
 routes.use((req,res,next)=>{
@@ -377,7 +379,7 @@ routes.post('/postEditSubCategory',passport.checkAuthentication,async(req,res)=>
     
 })
 
-routes.get('/deletesubcategory',async(req,res)=>{
+routes.get('/deletesubcategory',passport.checkAuthentication,async(req,res)=>{
     try{
         let editid = req.query.id;
         let deletecategory = await subcategoryTbl.findByIdAndDelete(editid);
@@ -386,6 +388,48 @@ routes.get('/deletesubcategory',async(req,res)=>{
             return res.redirect('back');
         }else{
             req.flash('error',"Category not successfully delete");
+            return res.redirect('back');
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+})
+
+routes.get('/exsubcategory',passport.checkAuthentication,async(req,res)=>{
+    return res.render('exsubcategory/exsubcategory',{
+        categoryId : [],
+        subcategory : []
+    })
+})
+
+routes.get('/add_exsubcategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        let category = await categoryTbl.find({});
+        let subcategory = await subcategoryTbl.find({});
+        return res.render('exsubcategory/add_ex_sub_category',{
+            category,
+            subcategory
+        })
+    }catch(err){
+        console.log(err);
+        return false;
+    }  
+})
+
+routes.post('/postExSubCategory',passport.checkAuthentication,async(req,res)=>{
+    try{
+        const {category,subcategory,exsubcategory} = req.body;
+        const exsubcategoryInsert = await exsubcategoryTbl.create({
+            categoryId : category,
+            subcategoryId : subcategory,
+            exsubcategory  :exsubcategory
+        })
+        if(exsubcategoryInsert){
+            req.flash('success',"Exsubcategory successfully insert");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"Exsubcategory not successfully insert");
             return res.redirect('back');
         }
     }catch(err){
