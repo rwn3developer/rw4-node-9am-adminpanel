@@ -8,6 +8,8 @@ const registerTbl = require('../models/registerTbl');
 
 const flash = require('connect-flash');
 
+const multer = require('multer');
+
 const cookieParser = require('cookie-parser');
 
 routes.use(cookieParser());
@@ -17,7 +19,21 @@ routes.use(flash());
 
 const categoryTbl = require('../models/categoryTbl');
 const subcategoryTbl = require('../models/subcategoryTbl');
-const exsubcategoryTbl = require('../models/exsubcategory');
+const productTbl = require('../models/product');
+
+//file uploads
+
+const storage = multer.diskStorage({
+    destination : (req,res,cb)=>{
+        cb(null,'./uploads')
+    },
+    filename : (req,file,cb)=>{
+        cb(null,file.originalname);
+    }
+})
+
+const fileUpload = multer({storage : storage}).single('productimage')
+
 
 
 
@@ -396,18 +412,18 @@ routes.get('/deletesubcategory',passport.checkAuthentication,async(req,res)=>{
     }
 })
 
-routes.get('/exsubcategory',passport.checkAuthentication,async(req,res)=>{
-    return res.render('exsubcategory/exsubcategory',{
+routes.get('/product',passport.checkAuthentication,async(req,res)=>{
+    return res.render('product/product',{
         categoryId : [],
         subcategory : []
     })
 })
 
-routes.get('/add_exsubcategory',passport.checkAuthentication,async(req,res)=>{
+routes.get('/add_product',passport.checkAuthentication,async(req,res)=>{
     try{
         let category = await categoryTbl.find({});
         let subcategory = await subcategoryTbl.find({});
-        return res.render('exsubcategory/add_ex_sub_category',{
+        return res.render('product/add_product',{
             category,
             subcategory
         })
@@ -417,19 +433,23 @@ routes.get('/add_exsubcategory',passport.checkAuthentication,async(req,res)=>{
     }  
 })
 
-routes.post('/postExSubCategory',passport.checkAuthentication,async(req,res)=>{
+routes.post('/postProduct',passport.checkAuthentication,fileUpload,async(req,res)=>{
     try{
-        const {category,subcategory,exsubcategory} = req.body;
-        const exsubcategoryInsert = await exsubcategoryTbl.create({
+        const {category,subcategory,product,price,qty,description} = req.body;
+        const productInsert = await productTbl.create({
             categoryId : category,
             subcategoryId : subcategory,
-            exsubcategory  :exsubcategory
+            product  :product,
+            price : price,
+            qty : qty,
+            description : description,
+            image : req.file.path
         })
-        if(exsubcategoryInsert){
-            req.flash('success',"Exsubcategory successfully insert");
+        if(productInsert){
+            req.flash('success',"Product successfully insert");
             return res.redirect('back');
         }else{
-            req.flash('error',"Exsubcategory not successfully insert");
+            req.flash('error',"Product not successfully insert");
             return res.redirect('back');
         }
     }catch(err){

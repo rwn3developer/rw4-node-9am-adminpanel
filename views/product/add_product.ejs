@@ -47,11 +47,11 @@
                         </div>
                     <% } %>
                     
-                    <form  method="post" action="/postExSubCategory" class="form-horizontal">
+                    <form  method="post" action="/postProduct" class="form-horizontal" enctype="multipart/form-data">
                        
                         <div class="card-body">
                            
-                            <h4 class="card-title">Ex Sub Category</h4>
+                            <h4 class="card-title">Product</h4>
                             <div class="form-group row">
                                 <label for="fname" class="col-sm-3 text-right control-label col-form-label">Category</label>
                                 <div class="col-sm-9">
@@ -75,31 +75,37 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="lname" class="col-sm-3 text-right control-label col-form-label">ExSubcategory</label>
+                                <label for="lname" class="col-sm-3 text-right control-label col-form-label">Product</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="exsubcategory" class="form-control" id="lname" placeholder="Ex Sub Category Name Here">
+                                    <input type="text" name="product" class="form-control" id="lname" placeholder="Product Name Here">
                                 </div>
                             </div>
                             
 
-                            <!--<div class="form-group row">
-                                <label for="email1" class="col-sm-3 text-right control-label col-form-label">Company</label>
+                            <div class="form-group row">
+                                <label for="email1" class="col-sm-3 text-right control-label col-form-label">Price</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="email1" placeholder="Company Name Here">
+                                    <input type="text" name="price" class="form-control" id="email1" placeholder="Price Name Here">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Contact No</label>
+                                <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Qty</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="cono1" placeholder="Contact No Here">
+                                    <input type="text" name="qty" class="form-control" id="cono1" placeholder="Contact No Here">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Message</label>
+                                <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Description</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control"></textarea>
+                                    <textarea name="description" class="form-control"></textarea>
                                 </div>
-                            </div>  -->
+                            </div>
+                            <div class="form-group row">
+                                <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Image</label>
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" name="productimage">
+                                </div>
+                            </div>
                         </div>
                         <div class="border-top">
                             <div class="card-body">
