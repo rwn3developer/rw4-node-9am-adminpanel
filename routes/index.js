@@ -12,6 +12,7 @@ const multer = require('multer');
 
 const cookieParser = require('cookie-parser');
 
+
 routes.use(cookieParser());
 
 routes.use(flash());
@@ -413,10 +414,17 @@ routes.get('/deletesubcategory',passport.checkAuthentication,async(req,res)=>{
 })
 
 routes.get('/product',passport.checkAuthentication,async(req,res)=>{
-    return res.render('product/product',{
-        categoryId : [],
-        subcategory : []
-    })
+    try{
+        let product = await productTbl.find({}).populate('subcategoryId').populate('categoryId');
+        console.log(product);
+        return res.render('product/product',{
+            product
+        })
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+   
 })
 
 routes.get('/add_product',passport.checkAuthentication,async(req,res)=>{
