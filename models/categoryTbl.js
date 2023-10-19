@@ -5,6 +5,10 @@ const categorySchema = mongoose.Schema({
         type : String,
         required : true
     },
+    status : {
+        type : Number,
+        default : 0
+    }
 })
 
 const category = mongoose.model('category',categorySchema);

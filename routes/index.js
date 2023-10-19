@@ -467,5 +467,41 @@ routes.post('/postProduct',passport.checkAuthentication,fileUpload,async(req,res
 })
 
 
+routes.get('/category_deactive_status',async(req,res)=>{
+    try{
+        let id = req.query.id;
+        let categoryStatus = await categoryTbl.findByIdAndUpdate(id,{
+            status : 1
+        })
+        if(categoryStatus){
+            req.flash('success',"Status successfully changed");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"something wrong");
+            return res.redirect('back');
+        }
+    }catch(err){
+        return false;
+    }
+})
+routes.get('/category_active_status',async(req,res)=>{
+    try{
+        let id = req.query.id;
+        let categoryStatus = await categoryTbl.findByIdAndUpdate(id,{
+            status : 0
+        })
+        if(categoryStatus){
+            req.flash('success',"Status successfully changed");
+            return res.redirect('back');
+        }else{
+            req.flash('error',"something wrong");
+            return res.redirect('back');
+        }
+    }catch(err){
+        return false;
+    }
+})
+
+
 
 module.exports = routes; 
