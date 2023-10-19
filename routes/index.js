@@ -261,7 +261,7 @@ routes.get('/category',passport.checkAuthentication,async(req,res)=>{
     try{
         let viewcategory = await categoryTbl.find({});
         if(viewcategory){
-            return res.render('category/category',{
+            return res.render('category/category',{ 
                 viewcategory
             });
         }else{
